@@ -4,9 +4,14 @@ import { listings} from "../data/mockData";
 function Listings() {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [listingsList, setListingsList] = useState(listings);
+
+    const handleDelete = (id) => {
+        setListingsList(listingsList.filter((listing) => listing.id !== id));
+    };
 
     // run filters before rendering
-    const filtered = listings.filter((listing) => {
+    const filtered = listingsList.filter((listing) => {
         if(statusFilter === 'all') return true;
         return listing.status === statusFilter;
     }).filter((listing) => {
@@ -101,7 +106,8 @@ function Listings() {
                             </span>
                           </td>
                           <td style={tdStyle}>
-                            <button style={{
+                            <button onClick={() => handleDelete(listing.id)}
+                             style={{
                               background: 'none',
                               border: '1px solid #FADBD8',
                               color: '#C0392B',

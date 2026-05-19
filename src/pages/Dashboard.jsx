@@ -33,7 +33,7 @@ function Dashboard() {
                         </tr>
                     </thead>
                     <tbody>
-                        {listings.map((listing) => (
+                        {listings.slice(0, 5).map((listing) => (
                             <tr key={listing.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
                                 <td style={ tdStyle }>{listing.title}</td>
                                 <td style={ tdStyle }>{listing.city}</td>

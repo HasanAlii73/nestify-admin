@@ -6,6 +6,7 @@ function Listings() {
     const [statusFilter, setStatusFilter] = useState('all');
     const [listingsList, setListingsList] = useState(listings);
 
+    // Delete listing by id
     const handleDelete = (id) => {
         setListingsList(listingsList.filter((listing) => listing.id !== id));
     };

@@ -21,7 +21,6 @@ function Listings() {
 
     return (
         <div>
-            <h1 style={{ marginTop: 0, color: '#1B4F72' }}>Listings</h1>
 
             <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
                 {/* Search Bar */}

@@ -17,7 +17,6 @@ function Users() {
 
   return (
     <div>
-      <h1 style={{ marginTop: 0, color: "#1B4F72" }}>Users</h1>
 
       {/* Search Bar */}
       <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>

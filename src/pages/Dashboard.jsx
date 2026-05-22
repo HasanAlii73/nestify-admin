@@ -4,7 +4,6 @@ import StatCard from '../components/StatCard';
 function Dashboard() {
     return (
         <div>
-            <h1 style={{marginTop: 0, color: '#1B4F72'}}>Dashboard</h1>
 
             {/* Stats Cards Row*/}
             <div style={{display: 'flex', gap: '20px', marginBottom: '20px'}}>

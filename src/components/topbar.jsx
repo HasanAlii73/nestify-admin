@@ -7,6 +7,7 @@ function Topbar() {
     "/Dashboard": "Dashboard",
     "/Listings": "Listings",
     "/Users": "Users",
+    "/Settings": "Settings",
   };
   console.log(location.pathname);
   const pageTitle = titles[location.pathname];

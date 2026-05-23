@@ -11,6 +11,7 @@ function Sidebar() {
                 <NavLink to="/Dashboard" style={navStyle}>Dashboard</NavLink>
                 <NavLink to="/Listings" style={navStyle}>Listings</NavLink>
                 <NavLink to="/Users" style={navStyle}>Users</NavLink>
+                <NavLink to="/Settings" style={navStyle}>Settings</NavLink>
             </nav>
         </aside>
     );

@@ -6,7 +6,7 @@ function Dashboard() {
         <div>
 
             {/* Stats Cards Row*/}
-            <div style={{display: 'flex', gap: '20px', marginBottom: '20px'}}>
+            <div style={{display: 'flex', gap: '16px', marginBottom: '32px'}}>
                 {stats.map((stat) => (
                     <StatCard key={stat.id} title={stat.title} value={stat.value} />
                 ))}
@@ -18,6 +18,7 @@ function Dashboard() {
                 border: '1px solid #e0e0e0',
                 borderRadius: '10px',
                 padding: '24px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
             }}>
                 <h2 style={{marginTop: 0, color: '#1B4F72'}}>Recent Listings</h2>
                 

@@ -9,20 +9,20 @@ import Users from './pages/Users';
 function App() {
     return (
         <BrowserRouter>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', minHeight: '100vh'  }}>
 
                 <Sidebar />
 
-                <main style={{ flex: 1, padding: '24px' }}>
+                <main style={{ flex: 1 }}>
                  <Topbar />
 
                  <div style={{ padding: '24px' }}>
                      <Routes>
                           <Route path="/" element={<Navigate to="/Dashboard" />} />
-                          <Route path="/dashboard" element={<Dashboard />} />
-                          <Route path="/listings" element={<Listings />} />
-                          <Route path="/users" element={<Users />} />
-                          <Route path="/settings" element={<Settings />} />
+                          <Route path="/Dashboard" element={<Dashboard />} />
+                          <Route path="/Listings" element={<Listings />} />
+                          <Route path="/Users" element={<Users />} />
+                          <Route path="/Settings" element={<Settings />} />
                      </Routes>
                  </div>
                 </main>

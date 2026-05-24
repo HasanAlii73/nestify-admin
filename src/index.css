@@ -8,4 +8,10 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background: #F7F5F2;
   color: #1C2333;
+  min-height: 100vh;
+}
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }

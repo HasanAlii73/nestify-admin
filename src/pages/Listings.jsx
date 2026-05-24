@@ -46,6 +46,7 @@ function Listings() {
                           style={{
                               borderRadius: '8px',
                               border: '1px solid #e0e0e0',
+                              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                               padding: '10px 18px',
                               background: statusFilter === s ? '#1B4F72' : '#fff',
                               color:      statusFilter === s ? '#fff'    : '#7A8299',
@@ -62,6 +63,7 @@ function Listings() {
             <div style={{
             background: '#fff',
             border: '1px solid #e0e0e0',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
             borderRadius: '10px',
             padding: '24px',
             }}>

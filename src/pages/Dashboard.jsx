@@ -8,7 +8,7 @@ function Dashboard() {
             {/* Stats Cards Row*/}
             <div style={{display: 'flex', gap: '16px', marginBottom: '32px'}}>
                 {stats.map((stat) => (
-                    <StatCard key={stat.id} title={stat.title} value={stat.value} />
+                    <StatCard key={stat.id} title={stat.title} value={stat.value} color={stat.color} />
                 ))}
             </div>
 

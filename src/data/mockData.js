@@ -1,8 +1,8 @@
 export const stats = [
-  { id: 1, title: "Total Listings", value: 124 },
-  { id: 2, title: "Total Users",    value: 58  },
-  { id: 3, title: "For Sale",       value: 89  },
-  { id: 4, title: "For Rent",       value: 35  },
+  { id: 1, title: "Total Listings", value: 124, color: "#2E86C1" },
+  { id: 2, title: "Total Users",    value: 58,  color: "#1A6E35" },
+  { id: 3, title: "For Sale",       value: 89,  color: "#D4A843" },
+  { id: 4, title: "For Rent",       value: 35,  color: "#C0392B" },
 ];
 
 export const listings = [

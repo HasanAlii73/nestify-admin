@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Building2, Users, Settings } from "lucide-react";
+import { LayoutDashboard, Building2, Users, Settings, MessageSquareWarning } from "lucide-react";
 
 function Sidebar() {
   return (
@@ -39,6 +39,10 @@ function Sidebar() {
         <NavLink to="/Settings" style={navStyle}>
           <Settings size={18} />
           Settings
+        </NavLink>
+        <NavLink to="/Complaints" style={navStyle}>
+          <MessageSquareWarning size={18} />
+          Complaints
         </NavLink>
       </nav>
     </aside>

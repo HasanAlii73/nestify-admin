@@ -19,3 +19,10 @@ export const users = [
   { id: 3, name: "Hasan Ali",     email: "hasan@email.com",  role: "seller", listings: 5 },
   { id: 4, name: "Lena Qasim",    email: "lena@email.com",   role: "buyer",  listings: 0 },
 ];
+
+export const complaints = [
+  { id: 1, userName: "Ahmad Karimi",  title: "Fake listing",          text: "This listing has wrong information and fake photos.",  status: "pending"  },
+  { id: 2, userName: "Sara Mousa",    title: "Seller not responding",  text: "I contacted the seller 3 times with no response.",     status: "pending"  },
+  { id: 3, userName: "Lena Qasim",    title: "Inappropriate content",  text: "This listing contains inappropriate descriptions.",    status: "reviewed" },
+  { id: 4, userName: "Omar Hassan",   title: "Wrong price listed",     text: "The price shown is different from what seller says.",  status: "resolved" },
+];

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Complaints from './pages/Complaints';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Topbar from './components/topbar';
@@ -23,6 +24,7 @@ function App() {
                           <Route path="/Listings" element={<Listings />} />
                           <Route path="/Users" element={<Users />} />
                           <Route path="/Settings" element={<Settings />} />
+                          <Route path="/Complaints" element={<Complaints />} />
                      </Routes>
                  </div>
                 </main>

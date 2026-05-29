@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { complaints } from "../data/mockData";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { BASE_URL } from "../config";
+import { getToken } from "../utils/auth";
 
 function Complaints() {
   const [expandedId, setExpandedId] = useState(null);
   const [statusFilter, setStatusFilter] = useState("all");
-  const [complaintsList, setComplaintsList] = useState(complaints);
+  const [complaintsList, setComplaintsList] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
 
   const handleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
@@ -28,6 +32,24 @@ function Complaints() {
       ),
     );
   };
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/api/reports/`, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    })
+      .then((res) => {
+        setComplaintsList(res.data.data.reports);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        setError("Failed to load complaints.");
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p style={{ padding: '24px', color: '#7A8299' }}>Loading complaints...</p>;
+  if (error)   return <p style={{ padding: '24px', color: '#C0392B' }}>{error}</p>;
 
   return (
     <div>

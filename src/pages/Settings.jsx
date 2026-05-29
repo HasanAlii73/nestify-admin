@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { removeToken } from "../utils/auth";
 
 function Settings() {
   const [settings, setSettings] = useState({
@@ -67,7 +68,18 @@ function Settings() {
           />
         </div>
 
-        <button style={btnStyle}>Save Changes</button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button style={btnStyle}>Save Changes</button>
+          <button
+            style={{ ...btnStyle, background: "#C0392B", marginTop: "12px" }}
+            onClick={() => {
+              removeToken();
+              window.location.href = "/login";
+            }}
+          >
+            Log Out
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -77,7 +89,7 @@ const cardStyle = {
   border: "1px solid #e0e0e0",
   borderRadius: "10px",
   padding: "24px",
-  boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
 };
 
 const cardTitleStyle = {

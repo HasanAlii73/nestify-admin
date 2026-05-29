@@ -17,15 +17,29 @@ function Users() {
       return user.role === roleFilter;
     })
     .filter((user) => {
-      return user.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return `${user.firstName} ${user.lastName}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
     });
 
+  const handleDelete = (id) => {
+    axios
+      .delete(`${BASE_URL}/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      .then(() => {
+        setUsers(users.filter((u) => u._id !== id));
+      })
+      .catch((err) => console.log(err.response));
+  };
+
   useEffect(() => {
-  axios.get(`${BASE_URL}/api/users/`, {
-    headers: { Authorization: `Bearer ${getToken()}` },
+    axios
+      .get(`${BASE_URL}/api/users/`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
       })
       .then((res) => {
-        setUsers(res.data);
+        setUsers(res.data.data.users);
         setLoading(false);
       })
       .catch((err) => {
@@ -35,8 +49,12 @@ function Users() {
       });
   }, []);
 
-  if (loading) return <p style={{ padding: '24px', color: '#7A8299' }}>Loading users...</p>;
-  if (error)   return <p style={{ padding: '24px', color: '#C0392B' }}>{error}</p>;
+  if (loading)
+    return (
+      <p style={{ padding: "24px", color: "#7A8299" }}>Loading users...</p>
+    );
+  if (error)
+    return <p style={{ padding: "24px", color: "#C0392B" }}>{error}</p>;
 
   return (
     <div>
@@ -59,7 +77,7 @@ function Users() {
         />
 
         {/* Filter btns */}
-        {["all", "seller", "buyer"].map((s) => (
+        {["all", "USER", "ADMIN"].map((s) => (
           <button
             key={s}
             onClick={() => setRoleFilter(s)}
@@ -107,15 +125,19 @@ function Users() {
                 <th style={thStyle}>Name</th>
                 <th style={thStyle}>Email</th>
                 <th style={thStyle}>Role</th>
-                <th style={thStyle}>Listings</th>
                 <th style={thStyle}>Action</th>
               </tr>
             </thead>
 
             <tbody>
               {filtered.map((user) => (
-                <tr key={user.id} style={{ borderBottom: "1px solid #f0f0f0" }}>
-                  <td style={tdStyle}>{user.name}</td>
+                <tr
+                  key={user._id}
+                  style={{ borderBottom: "1px solid #f0f0f0" }}
+                >
+                  <td style={tdStyle}>
+                    {user.firstName} {user.lastName}
+                  </td>
                   <td style={tdStyle}>{user.email}</td>
                   <td style={tdStyle}>
                     <span
@@ -132,9 +154,9 @@ function Users() {
                       {user.role}
                     </span>
                   </td>
-                  <td style={tdStyle}>{user.listings}</td>
                   <td style={tdStyle}>
                     <button
+                      onClick={() => handleDelete(user._id)}
                       style={{
                         background: "none",
                         border: "1px solid #FADBD8",

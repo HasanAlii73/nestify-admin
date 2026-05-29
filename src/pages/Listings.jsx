@@ -12,7 +12,15 @@ function Listings() {
 
   // Delete listing by id
   const handleDelete = (id) => {
-    setListingsList(listingsList.filter((listing) => listing.id !== id));
+    console.log("token:", getToken());
+    axios
+      .delete(`${BASE_URL}/api/Properties/${id}`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      .then(() => {
+        setListingsList(listingsList.filter((l) => l._id !== id));
+      })
+      .catch((err) => console.log(err.response));
   };
 
   // run filters before rendering
@@ -33,7 +41,7 @@ function Listings() {
         },
       })
       .then((res) => {
-        setListingsList(res.data);
+        setListingsList(res.data.data.properties);
         setLoading(false);
       })
       .catch((err) => {
@@ -43,13 +51,15 @@ function Listings() {
       });
   }, []);
 
-  if (loading) return <p style={{ padding: '24px', color: '#7A8299' }}>Loading listings...</p>;
-  if (error)   return <p style={{ padding: '24px', color: '#C0392B' }}>{error}</p>;
-
+  if (loading)
+    return (
+      <p style={{ padding: "24px", color: "#7A8299" }}>Loading listings...</p>
+    );
+  if (error)
+    return <p style={{ padding: "24px", color: "#C0392B" }}>{error}</p>;
 
   return (
     <div>
-      
       <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
         {/* Search Bar */}
         <input
@@ -68,7 +78,7 @@ function Listings() {
         />
 
         {/* Filter Btns */}
-        {["all", "active", "sold"].map((s) => (
+        {["all", "available", "sold", "rented"].map((s) => (
           <button
             key={s}
             onClick={() => setStatusFilter(s)}
@@ -126,20 +136,28 @@ function Listings() {
             <tbody>
               {filtered.map((listing) => (
                 <tr
-                  key={listing.id}
+                  key={listing._id}
                   style={{ borderBottom: "1px solid #f0f0f0" }}
                 >
                   <td style={tdStyle}>{listing.title}</td>
                   <td style={tdStyle}>{listing.city}</td>
                   <td style={tdStyle}>${listing.price.toLocaleString()}</td>
-                  <td style={tdStyle}>{listing.type}</td>
+                  <td style={tdStyle}>{listing.purpose}</td>
                   <td style={tdStyle}>
                     <span
                       style={{
                         background:
-                          listing.status === "active" ? "#D5F5E3" : "#FADBD8",
+                          listing.status === "available"
+                            ? "#D5F5E3"
+                            : listing.status === "sold"
+                              ? "#FADBD8"
+                              : "#FCF3CF",
                         color:
-                          listing.status === "active" ? "#1A6E35" : "#C0392B",
+                          listing.status === "available"
+                            ? "#1A6E35"
+                            : listing.status === "sold"
+                              ? "#C0392B"
+                              : "#7D6608",
                         padding: "3px 10px",
                         borderRadius: "20px",
                         fontSize: "12px",
@@ -151,7 +169,7 @@ function Listings() {
                   </td>
                   <td style={tdStyle}>
                     <button
-                      onClick={() => handleDelete(listing.id)}
+                      onClick={() => handleDelete(listing._id)}
                       style={{
                         background: "none",
                         border: "1px solid #FADBD8",

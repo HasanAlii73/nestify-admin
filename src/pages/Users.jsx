@@ -1,9 +1,14 @@
-import { useState } from "react";
-import { users } from "../data/mockData";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { BASE_URL } from "../config";
+import { getToken } from "../utils/auth";
 
 function Users() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // run filters before rendering
   const filtered = users
@@ -15,9 +20,26 @@ function Users() {
       return user.name.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
+  useEffect(() => {
+  axios.get(`${BASE_URL}/api/users/`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      .then((res) => {
+        setUsers(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        setError("Failed to load users.");
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p style={{ padding: '24px', color: '#7A8299' }}>Loading users...</p>;
+  if (error)   return <p style={{ padding: '24px', color: '#C0392B' }}>{error}</p>;
+
   return (
     <div>
-
       {/* Search Bar */}
       <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
         <input
@@ -29,7 +51,7 @@ function Users() {
             flex: 1,
             padding: "10px 14px",
             border: "1px solid #e0e0e0",
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
             borderRadius: "8px",
             fontSize: "14px",
             outline: "none",
@@ -44,7 +66,7 @@ function Users() {
             style={{
               borderRadius: "8px",
               border: "1px solid #e0e0e0",
-              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
               padding: "10px 18px",
               background: roleFilter === s ? "#1B4F72" : "#fff",
               color: roleFilter === s ? "#fff" : "#7A8299",
@@ -63,7 +85,7 @@ function Users() {
         style={{
           background: "#fff",
           border: "1px solid #e0e0e0",
-          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+          boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
           borderRadius: "10px",
           padding: "24px",
         }}

@@ -43,13 +43,13 @@ function Listings() {
       });
   }, []);
 
+  if (loading) return <p style={{ padding: '24px', color: '#7A8299' }}>Loading listings...</p>;
+  if (error)   return <p style={{ padding: '24px', color: '#C0392B' }}>{error}</p>;
+
+
   return (
     <div>
-      {loading && (
-        <p style={{ padding: "24px", color: "#7A8299" }}>Loading listings...</p>
-      )}
-      {error && <p style={{ padding: "24px", color: "#C0392B" }}>{error}</p>}
-
+      
       <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
         {/* Search Bar */}
         <input

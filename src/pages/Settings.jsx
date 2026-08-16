@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { removeToken } from "../utils/auth";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { removeToken, getToken, getUser } from "../utils/auth";
+import { BASE_URL } from "../config";
 
 function Settings() {
   const [settings, setSettings] = useState({
@@ -8,10 +10,59 @@ function Settings() {
     adminName: "Hasan",
     adminEmail: "hasan@email.com",
   });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/api/users/myProfile`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+        const user = res.data.data.profile;
+        setSettings((prev) => ({
+          ...prev,
+          adminName: `${user.firstName} ${user.lastName}`,
+          adminEmail: user.email,
+        }));
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const handleChange = (field, value) => {
     setSettings({ ...settings, [field]: value });
   };
+
+  const handleSaveAdmin = () => {
+    setSaving(true);
+    setSaveMsg("");
+    const user = getUser();
+    const [firstName, ...rest] = settings.adminName.trim().split(" ");
+    const lastName = rest.join(" ") || firstName;
+
+    axios
+      .patch(
+        `${BASE_URL}/api/users/${user.id}`,
+        { firstName, lastName, email: settings.adminEmail },
+        { headers: { Authorization: `Bearer ${getToken()}` } },
+      )
+      .then(() => {
+        setSaveMsg("Saved successfully.");
+        setSaving(false);
+      })
+      .catch(() => {
+        setSaveMsg("Failed to save. Try again.");
+        setSaving(false);
+      });
+  };
+
+  if (loading)
+    return (
+      <p style={{ padding: "24px", color: "#7A8299" }}>Loading settings...</p>
+    );
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
@@ -41,7 +92,17 @@ function Settings() {
           </label>
         </div>
 
-        <button style={btnStyle}>Save Changes</button>
+        <p style={{ fontSize: "12px", color: "#7A8299", marginTop: "10px" }}>
+          * Site settings are UI only — backend support coming in a future
+          version.
+        </p>
+
+        <button
+          style={{ ...btnStyle, opacity: 0.5, cursor: "not-allowed" }}
+          disabled
+        >
+          Save Changes
+        </button>
       </div>
 
       {/* Admin Account Card */}
@@ -69,7 +130,25 @@ function Settings() {
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <button style={btnStyle}>Save Changes</button>
+          <button
+            style={{ ...btnStyle, opacity: saving ? 0.6 : 1 }}
+            onClick={handleSaveAdmin}
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+
+          {saveMsg && (
+            <p
+              style={{
+                fontSize: "13px",
+                color: saveMsg.includes("success") ? "#1A6E35" : "#C0392B",
+                marginTop: "8px",
+              }}
+            >
+              {saveMsg}
+            </p>
+          )}
           <button
             style={{ ...btnStyle, background: "#C0392B", marginTop: "12px" }}
             onClick={() => {

@@ -143,8 +143,8 @@ function Users() {
                     <span
                       style={{
                         background:
-                          user.role === "seller" ? "#EBF3FA" : "#D5F5E3",
-                        color: user.role === "seller" ? "#1B4F72" : "#1A6E35",
+                          user.role === "USER" ? "#EBF3FA" : "#D5F5E3",
+                        color: user.role === "USER" ? "#1B4F72" : "#1A6E35",
                         padding: "3px 10px",
                         borderRadius: "20px",
                         fontSize: "12px",

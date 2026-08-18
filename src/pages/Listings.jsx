@@ -9,10 +9,10 @@ function Listings() {
   const [listingsList, setListingsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedListing, setSelectedListing] = useState(null);
 
   // Delete listing by id
   const handleDelete = (id) => {
-    console.log("token:", getToken());
     axios
       .delete(`${BASE_URL}/api/Properties/${id}`, {
         headers: { Authorization: `Bearer ${getToken()}` },
@@ -182,6 +182,21 @@ function Listings() {
                     >
                       Delete
                     </button>
+                    <button
+                      onClick={() => setSelectedListing(listing)}
+                      style={{
+                        background: "none",
+                        border: "1px solid #AED6F1",
+                        color: "#1B4F72",
+                        padding: "5px 12px",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        cursor: "pointer",
+                        marginLeft: "6px",
+                      }}
+                    >
+                      Info
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -189,6 +204,232 @@ function Listings() {
           </table>
         )}
       </div>
+      {/* Info Card Modal */}
+      {selectedListing && (
+        <div
+          onClick={() => setSelectedListing(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "#fff",
+              borderRadius: "14px",
+              padding: "28px",
+              width: "480px",
+              maxHeight: "85vh",
+              overflowY: "auto",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+              position: "relative",
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedListing(null)}
+              style={{
+                position: "absolute",
+                top: "14px",
+                right: "14px",
+                background: "none",
+                border: "none",
+                fontSize: "20px",
+                cursor: "pointer",
+                color: "#7A8299",
+              }}
+            >
+              ✕
+            </button>
+
+            {/* Header */}
+            <h2
+              style={{
+                fontSize: "16px",
+                color: "#1B4F72",
+                marginBottom: "4px",
+                paddingRight: "24px",
+              }}
+            >
+              {selectedListing.title}
+            </h2>
+            <p
+              style={{
+                fontSize: "12px",
+                color: "#7A8299",
+                marginBottom: "20px",
+              }}
+            >
+              {selectedListing.address}
+            </p>
+
+            {/* Price + Status Row */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "22px",
+                  fontWeight: "700",
+                  color: "#1B4F72",
+                }}
+              >
+                ${selectedListing.price.toLocaleString()}
+                <span
+                  style={{
+                    fontSize: "13px",
+                    color: "#7A8299",
+                    fontWeight: "400",
+                  }}
+                >
+                  {" "}
+                  / {selectedListing.purpose}
+                </span>
+              </span>
+              <span
+                style={{
+                  background:
+                    selectedListing.status === "available"
+                      ? "#D5F5E3"
+                      : selectedListing.status === "sold"
+                        ? "#FADBD8"
+                        : "#FCF3CF",
+                  color:
+                    selectedListing.status === "available"
+                      ? "#1A6E35"
+                      : selectedListing.status === "sold"
+                        ? "#C0392B"
+                        : "#7D6608",
+                  padding: "4px 12px",
+                  borderRadius: "20px",
+                  fontSize: "12px",
+                  fontWeight: "600",
+                }}
+              >
+                {selectedListing.status}
+              </span>
+            </div>
+
+            {/* Stats Grid */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: "10px",
+                marginBottom: "20px",
+              }}
+            >
+              {[
+                { label: "Bedrooms", value: selectedListing.bedRooms },
+                { label: "Bathrooms", value: selectedListing.bathRooms },
+                { label: "Area", value: `${selectedListing.area} m²` },
+                { label: "Category", value: selectedListing.category },
+                { label: "City", value: selectedListing.city },
+                { label: "Views", value: selectedListing.views },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    background: "#F7F5F2",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: "#7A8299",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "600",
+                      color: "#1B4F72",
+                    }}
+                  >
+                    {item.value}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Description */}
+            <div style={{ marginBottom: "16px" }}>
+              <div
+                style={{
+                  fontSize: "12px",
+                  color: "#7A8299",
+                  fontWeight: "600",
+                  marginBottom: "6px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                Description
+              </div>
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#1C2333",
+                  lineHeight: "1.7",
+                }}
+              >
+                {selectedListing.description || "No description provided."}
+              </p>
+            </div>
+
+            {/* Dates */}
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                borderTop: "1px solid #f0f0f0",
+                paddingTop: "14px",
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: "11px", color: "#7A8299" }}>Listed</div>
+                <div style={{ fontSize: "12px", color: "#1C2333" }}>
+                  {new Date(selectedListing.createdAt).toLocaleDateString()}
+                </div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: "11px", color: "#7A8299" }}>
+                  Last Updated
+                </div>
+                <div style={{ fontSize: "12px", color: "#1C2333" }}>
+                  {new Date(selectedListing.updatedAt).toLocaleDateString()}
+                </div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: "11px", color: "#7A8299" }}>Likes</div>
+                <div style={{ fontSize: "12px", color: "#1C2333" }}>
+                  {selectedListing.likes}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

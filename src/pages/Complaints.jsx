@@ -38,6 +38,7 @@ function Complaints() {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
       .then((res) => {
+        console.log("Complaints fetched:", res.data.data);
         setComplaintsList(res.data.data.reports);
         setLoading(false);
       })

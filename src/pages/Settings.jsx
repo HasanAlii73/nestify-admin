@@ -20,7 +20,6 @@ function Settings() {
         headers: { Authorization: `Bearer ${getToken()}` },
       })
       .then((res) => {
-        console.log(res.data);
         const user = res.data.data.profile;
         setSettings((prev) => ({
           ...prev,

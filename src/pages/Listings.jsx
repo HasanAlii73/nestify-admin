@@ -41,6 +41,7 @@ function Listings() {
         },
       })
       .then((res) => {
+        console.log(res.data.data.properties);
         setListingsList(res.data.data.properties);
         setLoading(false);
       })
@@ -141,7 +142,7 @@ function Listings() {
                 >
                   <td style={tdStyle}>{listing.title}</td>
                   <td style={tdStyle}>{listing.city}</td>
-                  <td style={tdStyle}>${listing.price.toLocaleString()}</td>
+                  <td style={tdStyle}>{listing.price.toLocaleString()} S.P</td>
                   <td style={tdStyle}>{listing.purpose}</td>
                   <td style={tdStyle}>
                     <span
@@ -288,7 +289,7 @@ function Listings() {
                   color: "#1B4F72",
                 }}
               >
-                ${selectedListing.price.toLocaleString()}
+                {selectedListing.price.toLocaleString()} S.P
                 <span
                   style={{
                     fontSize: "13px",
